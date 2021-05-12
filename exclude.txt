@@ -1,1 +1,3 @@
-main
+atomicity/Producer.main
+atomicity/Producer.run
+atomicity/Consumer.run

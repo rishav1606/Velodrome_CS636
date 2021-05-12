@@ -39,9 +39,9 @@ public class Test extends Thread {
     static int y;
     
     public void inc() {
-     synchronized(m){
+    // synchronized(m){
               y++;
-        }
+      //  }
         
     }
 

@@ -215,25 +215,25 @@ final public class VelodromeTool extends Tool {
            }
     }
     
-    public static String extractMethodName(String mName) {
-    	String name;
-        if(mName.contains("__$rr_"))
-        {
-            name = mName.substring(6);
-            Integer i = name.indexOf('$');
-            name = name.substring(0,i-2);
-            //print("index is :"+ i.toString());
-        }
-        else
-            name = mName;
-        return name;
+    // public static String extractMethodName(String mName) {
+    // 	String name;
+    //     if(mName.contains("__$rr_"))
+    //     {
+    //         name = mName.substring(6);
+    //         Integer i = name.indexOf('$');
+    //         name = name.substring(0,i-2);
+    //         //print("index is :"+ i.toString());
+    //     }
+    //     else
+    //         name = mName;
+    //     return name;
     
-    }
+    // }
    public static boolean graph_add(int src , int des,String mName){//adding edge and cycle checking
          synchronized(graph){
               graph.addEdge(src,des);
               boolean isCycle = graph.isCyclic();   //graph.isCyclic();
-              String name = extractMethodName(mName);
+              String name = mName;
               //boolean atLeastOneCycle = isCycle;
                
               if(isCycle) {
@@ -291,7 +291,7 @@ final public class VelodromeTool extends Tool {
     public void enter(final MethodEvent event) {
     
      if(cycleOnce==false) {
-     String mName = event.getInfo().getName();
+     String mName = event.getInfo().toSimpleName();
      if(!excludeFunSet.contains(mName))
      {
         print("\n **Welcome to Method enter Event**"+ mName);
@@ -329,7 +329,7 @@ final public class VelodromeTool extends Tool {
     @Override
     public void exit(final MethodEvent event) {
      if(cycleOnce==false) {
-     String mName = event.getInfo().getName();
+     String mName = event.getInfo().toSimpleName();
      if(!excludeFunSet.contains(mName))
      {
         
@@ -351,7 +351,7 @@ final public class VelodromeTool extends Tool {
         }
       }
        
-         if(mName.equals("main"))       //String mName = event.getInfo().getName();
+         if(mName.equals("test/Test.main"))       //String mName = event.getInfo().getName();
      print("\n\nGraph:\n"+ graph.toString());
       }
       super.exit(event);
@@ -362,7 +362,7 @@ final public class VelodromeTool extends Tool {
     public void acquire(AcquireEvent event) {
        //    print("\n **Welcome to New Acquire Event**");
         if(cycleOnce==false) {
-        String mName = event.getInfo().getEnclosing().getName();
+        String mName = event.getInfo().getEnclosing().toSimpleName();
         final ShadowThread st = event.getThread();
         final ShadowLock lock = event.getLock();
         final VelLockState vl;
@@ -446,7 +446,7 @@ final public class VelodromeTool extends Tool {
     @Override
     public void access(AccessEvent fae) {
       if(cycleOnce==false) {	
-	String mName = fae.getAccessInfo().getEnclosing().getName();
+	String mName = fae.getAccessInfo().getEnclosing().toSimpleName();
         ShadowThread currentThread = fae.getThread();
         int tid = currentThread.getTid();
         VelThreadState stateObj = thread_get(currentThread);
